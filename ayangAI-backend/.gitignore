@@ -1,11 +1,10 @@
-### @author <a href="https://github.com/liyupi">程序员鱼皮</a> ###
-### @from <a href="https://yupi.icu">编程导航知识星球</a> ###
-
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+# Do not upload configuration files
+!**/src/main/resources/config/prod/*
 
 ### STS ###
 .apt_generated
@@ -144,4 +143,5 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
 
