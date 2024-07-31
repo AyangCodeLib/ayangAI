@@ -1,17 +1,10 @@
 server:
   port: 8101
 spring:
-  # Elasticsearch 配置
-  # todo 需替换配置
-  elasticsearch:
-    uris: http://localhost:9200
-    username: root
-    password: 123456
   config:
     import:
     - classpath:config/prod/mysql/application.yml
     - classpath:config/prod/redis/application.yml
-    - classpath:config/prod/elasticsearch/application.yml
 mybatis-plus:
   configuration:
     # 生产环境关闭日志

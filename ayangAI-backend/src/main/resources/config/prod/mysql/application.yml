@@ -2,9 +2,9 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3360/my_db
-    username: root
-    password: 123456
+    url: jdbc:mysql://106.54.38.106:3380/my_db
+    username: ayang
+    password: SHy2000@0825SHy
 mybatis-plus:
   configuration:
     # 生产环境关闭日志
