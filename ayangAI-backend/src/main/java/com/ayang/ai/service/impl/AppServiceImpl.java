@@ -1,9 +1,6 @@
 package com.ayang.ai.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ayang.ai.common.ErrorCode;
 import com.ayang.ai.constant.CommonConstant;
 import com.ayang.ai.exception.ThrowUtils;
@@ -13,11 +10,17 @@ import com.ayang.ai.model.entity.App;
 import com.ayang.ai.model.entity.AppFavour;
 import com.ayang.ai.model.entity.AppThumb;
 import com.ayang.ai.model.entity.User;
+import com.ayang.ai.model.enums.AppScoringStrategyEnum;
+import com.ayang.ai.model.enums.AppTypeEnum;
+import com.ayang.ai.model.enums.ReviewStatusEnum;
 import com.ayang.ai.model.vo.AppVO;
 import com.ayang.ai.model.vo.UserVO;
 import com.ayang.ai.service.AppService;
 import com.ayang.ai.service.UserService;
 import com.ayang.ai.utils.SqlUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +38,6 @@ import java.util.stream.Collectors;
  * 应用服务实现
  *
  * @author <a href="https://github.com/AyangCodeLib">阿洋努力学习</a>
- * 
  */
 @Service
 @Slf4j
@@ -48,22 +50,37 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
      * 校验数据
      *
      * @param app
-     * @param add      对创建的数据进行校验
+     * @param add 对创建的数据进行校验
      */
     @Override
     public void validApp(App app, boolean add) {
         ThrowUtils.throwIf(app == null, ErrorCode.PARAMS_ERROR);
-        // todo 从对象中取值
-        String title = app.getTitle();
+        //  从对象中取值
+        String appName = app.getAppName();
+        String appDesc = app.getAppDesc();
+        Integer appType = app.getAppType();
+        Integer scoringStrategy = app.getScoringStrategy();
+        Integer reviewStatus = app.getReviewStatus();
+        String reviewMessage = app.getReviewMessage();
         // 创建数据时，参数不能为空
         if (add) {
-            // todo 补充校验规则
-            ThrowUtils.throwIf(StringUtils.isBlank(title), ErrorCode.PARAMS_ERROR);
+            // 补充校验规则
+            ThrowUtils.throwIf(StringUtils.isBlank(appName), ErrorCode.PARAMS_ERROR, "应用名称不能为空");
+            ThrowUtils.throwIf(StringUtils.isBlank(appDesc), ErrorCode.PARAMS_ERROR, "应用描述不能为空");
+            ReviewStatusEnum reviewStatusEnum = ReviewStatusEnum.getEnumByValue(reviewStatus);
+            ThrowUtils.throwIf(reviewStatusEnum == null, ErrorCode.PARAMS_ERROR, "审核状态不能非法");
+            AppTypeEnum appTypeEnum = AppTypeEnum.getEnumByValue(appType);
+            ThrowUtils.throwIf(appTypeEnum == null, ErrorCode.PARAMS_ERROR, "应用类别非法");
+            AppScoringStrategyEnum scoringStrategyEnum = AppScoringStrategyEnum.getEnumByValue(scoringStrategy);
+            ThrowUtils.throwIf(scoringStrategyEnum == null, ErrorCode.PARAMS_ERROR, "应用评分策略非法");
         }
         // 修改数据时，有参数则校验
-        // todo 补充校验规则
-        if (StringUtils.isNotBlank(title)) {
-            ThrowUtils.throwIf(title.length() > 80, ErrorCode.PARAMS_ERROR, "标题过长");
+        // 补充校验规则
+        if (StringUtils.isNotBlank(appName)) {
+            ThrowUtils.throwIf(appName.length() > 80, ErrorCode.PARAMS_ERROR, "应用名称要小于80");
+        }
+        if (StringUtils.isNotBlank(reviewMessage)) {
+            ThrowUtils.throwIf(reviewMessage.length() > 512, ErrorCode.PARAMS_ERROR, "审核内容要小于512");
         }
     }
 
@@ -79,34 +96,39 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         if (appQueryRequest == null) {
             return queryWrapper;
         }
-        // todo 从对象中取值
+        // 从对象中取值
         Long id = appQueryRequest.getId();
+        String appName = appQueryRequest.getAppName();
+        String appDesc = appQueryRequest.getAppDesc();
+        String appIcon = appQueryRequest.getAppIcon();
+        Integer appType = appQueryRequest.getAppType();
+        Integer scoringStrategy = appQueryRequest.getScoringStrategy();
+        Integer reviewStatus = appQueryRequest.getReviewStatus();
+        String reviewMessage = appQueryRequest.getReviewMessage();
+        Long reviewerId = appQueryRequest.getReviewerId();
+        Long userId = appQueryRequest.getUserId();
         Long notId = appQueryRequest.getNotId();
-        String title = appQueryRequest.getTitle();
-        String content = appQueryRequest.getContent();
         String searchText = appQueryRequest.getSearchText();
         String sortField = appQueryRequest.getSortField();
         String sortOrder = appQueryRequest.getSortOrder();
-        List<String> tagList = appQueryRequest.getTags();
-        Long userId = appQueryRequest.getUserId();
-        // todo 补充需要的查询条件
+
+        // 补充需要的查询条件
         // 从多字段中搜索
         if (StringUtils.isNotBlank(searchText)) {
             // 需要拼接查询条件
-            queryWrapper.and(qw -> qw.like("title", searchText).or().like("content", searchText));
+            queryWrapper.and(qw -> qw.like("appName", searchText).or().like("appDesc", searchText));
         }
         // 模糊查询
-        queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
-        queryWrapper.like(StringUtils.isNotBlank(content), "content", content);
-        // JSON 数组查询
-        if (CollUtil.isNotEmpty(tagList)) {
-            for (String tag : tagList) {
-                queryWrapper.like("tags", "\"" + tag + "\"");
-            }
-        }
-        // 精确查询
+        queryWrapper.like(StringUtils.isNotBlank(appName), "appName", appName);
+        queryWrapper.like(StringUtils.isNotBlank(appDesc), "appDesc", appDesc);
+        queryWrapper.like(StringUtils.isNotBlank(reviewMessage), "reviewMessage", reviewMessage);
         queryWrapper.ne(ObjectUtils.isNotEmpty(notId), "id", notId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(appIcon), "appIcon", appIcon);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(appType), "appType", appType);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(scoringStrategy), "scoringStrategy", scoringStrategy);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(reviewStatus), "reviewStatus", reviewStatus);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(reviewerId), "reviewerId", reviewerId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         // 排序规则
         queryWrapper.orderBy(SqlUtils.validSortField(sortField),
@@ -127,7 +149,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         // 对象转封装类
         AppVO appVO = AppVO.objToVo(app);
 
-        // todo 可以根据需要为封装对象补充值，不需要的内容可以删除
+        // 可以根据需要为封装对象补充值，不需要的内容可以删除
         // region 可选
         // 1. 关联查询用户信息
         Long userId = app.getUserId();
@@ -137,23 +159,6 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         }
         UserVO userVO = userService.getUserVO(user);
         appVO.setUser(userVO);
-        // 2. 已登录，获取用户点赞、收藏状态
-        long appId = app.getId();
-        User loginUser = userService.getLoginUserPermitNull(request);
-        if (loginUser != null) {
-            // 获取点赞
-            QueryWrapper<AppThumb> appThumbQueryWrapper = new QueryWrapper<>();
-            appThumbQueryWrapper.in("appId", appId);
-            appThumbQueryWrapper.eq("userId", loginUser.getId());
-            AppThumb appThumb = appThumbMapper.selectOne(appThumbQueryWrapper);
-            appVO.setHasThumb(appThumb != null);
-            // 获取收藏
-            QueryWrapper<AppFavour> appFavourQueryWrapper = new QueryWrapper<>();
-            appFavourQueryWrapper.in("appId", appId);
-            appFavourQueryWrapper.eq("userId", loginUser.getId());
-            AppFavour appFavour = appFavourMapper.selectOne(appFavourQueryWrapper);
-            appVO.setHasFavour(appFavour != null);
-        }
         // endregion
 
         return appVO;
@@ -174,9 +179,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             return appVOPage;
         }
         // 对象列表 => 封装对象列表
-        List<AppVO> appVOList = appList.stream().map(app -> {
-            return AppVO.objToVo(app);
-        }).collect(Collectors.toList());
+        List<AppVO> appVOList = appList.stream().map(AppVO::objToVo).collect(Collectors.toList());
 
         // todo 可以根据需要为封装对象补充值，不需要的内容可以删除
         // region 可选
