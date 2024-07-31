@@ -172,7 +172,7 @@ PUT post_v1
 
 ```
 // 指定生成参数
-String packageName = "com.ayang.ayangdada";
+String packageName = "com.ayang.ai";
 String dataName = "用户评论";
 String dataKey = "userComment";
 String upperDataKey = "UserComment";

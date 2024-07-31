@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @SpringBootApplication
-@MapperScan("com.ayang.aai.mapper")
+@MapperScan("com.ayang.ai.mapper")
 @EnableScheduling
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class MainApplication {
