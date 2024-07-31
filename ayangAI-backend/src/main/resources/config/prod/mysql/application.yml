@@ -2,7 +2,7 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://106.54.38.106:3380/my_db
+    url: jdbc:mysql://106.54.38.106:3380/ayangAI
     username: ayang
     password: SHy2000@0825SHy
 mybatis-plus:
