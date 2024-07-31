@@ -12,9 +12,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yupi</groupId>
-    <artifactId>aq-backend</artifactId>
+    <artifactId>ayangAI-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>aq-backend</name>
+    <name>ayangAI-backend</name>
     <properties>
         <java.version>1.8</java.version>
     </properties>
