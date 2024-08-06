@@ -5,10 +5,6 @@ spring:
     import:
     - classpath:config/prod/mysql/application.yml
     - classpath:config/prod/redis/application.yml
-mybatis-plus:
-  configuration:
-    # 生产环境关闭日志
-    log-impl: ''
 # 接口文档配置
 knife4j:
   basic:

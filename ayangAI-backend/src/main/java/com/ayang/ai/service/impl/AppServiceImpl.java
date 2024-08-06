@@ -7,8 +7,6 @@ import com.ayang.ai.exception.ThrowUtils;
 import com.ayang.ai.mapper.AppMapper;
 import com.ayang.ai.model.dto.app.AppQueryRequest;
 import com.ayang.ai.model.entity.App;
-import com.ayang.ai.model.entity.AppFavour;
-import com.ayang.ai.model.entity.AppThumb;
 import com.ayang.ai.model.entity.User;
 import com.ayang.ai.model.enums.AppScoringStrategyEnum;
 import com.ayang.ai.model.enums.AppTypeEnum;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -181,32 +178,12 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         // 对象列表 => 封装对象列表
         List<AppVO> appVOList = appList.stream().map(AppVO::objToVo).collect(Collectors.toList());
 
-        // todo 可以根据需要为封装对象补充值，不需要的内容可以删除
+        // 可以根据需要为封装对象补充值，不需要的内容可以删除
         // region 可选
         // 1. 关联查询用户信息
         Set<Long> userIdSet = appList.stream().map(App::getUserId).collect(Collectors.toSet());
         Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
                 .collect(Collectors.groupingBy(User::getId));
-        // 2. 已登录，获取用户点赞、收藏状态
-        Map<Long, Boolean> appIdHasThumbMap = new HashMap<>();
-        Map<Long, Boolean> appIdHasFavourMap = new HashMap<>();
-        User loginUser = userService.getLoginUserPermitNull(request);
-        if (loginUser != null) {
-            Set<Long> appIdSet = appList.stream().map(App::getId).collect(Collectors.toSet());
-            loginUser = userService.getLoginUser(request);
-            // 获取点赞
-            QueryWrapper<AppThumb> appThumbQueryWrapper = new QueryWrapper<>();
-            appThumbQueryWrapper.in("appId", appIdSet);
-            appThumbQueryWrapper.eq("userId", loginUser.getId());
-            List<AppThumb> appAppThumbList = appThumbMapper.selectList(appThumbQueryWrapper);
-            appAppThumbList.forEach(appAppThumb -> appIdHasThumbMap.put(appAppThumb.getAppId(), true));
-            // 获取收藏
-            QueryWrapper<AppFavour> appFavourQueryWrapper = new QueryWrapper<>();
-            appFavourQueryWrapper.in("appId", appIdSet);
-            appFavourQueryWrapper.eq("userId", loginUser.getId());
-            List<AppFavour> appFavourList = appFavourMapper.selectList(appFavourQueryWrapper);
-            appFavourList.forEach(appFavour -> appIdHasFavourMap.put(appFavour.getAppId(), true));
-        }
         // 填充信息
         appVOList.forEach(appVO -> {
             Long userId = appVO.getUserId();
@@ -215,8 +192,6 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
                 user = userIdUserListMap.get(userId).get(0);
             }
             appVO.setUser(userService.getUserVO(user));
-            appVO.setHasThumb(appIdHasThumbMap.getOrDefault(appVO.getId(), false));
-            appVO.setHasFavour(appIdHasFavourMap.getOrDefault(appVO.getId(), false));
         });
         // endregion
 
