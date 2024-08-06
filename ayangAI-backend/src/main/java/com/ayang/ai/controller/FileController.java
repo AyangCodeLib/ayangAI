@@ -1,20 +1,16 @@
 package com.ayang.ai.controller;
 
 import cn.hutool.core.io.FileUtil;
-import com.ayang.ai.constant.FileConstant;
 import com.ayang.ai.common.BaseResponse;
 import com.ayang.ai.common.ErrorCode;
 import com.ayang.ai.common.ResultUtils;
+import com.ayang.ai.constant.FileConstant;
 import com.ayang.ai.exception.BusinessException;
 import com.ayang.ai.manager.CosManager;
 import com.ayang.ai.model.dto.file.UploadFileRequest;
 import com.ayang.ai.model.entity.User;
 import com.ayang.ai.model.enums.FileUploadBizEnum;
 import com.ayang.ai.service.UserService;
-import java.io.File;
-import java.util.Arrays;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.Arrays;
 
 /**
  * 文件接口

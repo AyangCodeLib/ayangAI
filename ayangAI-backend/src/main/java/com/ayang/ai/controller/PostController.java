@@ -2,34 +2,30 @@ package com.ayang.ai.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.ayang.ai.annotation.AuthCheck;
-import com.ayang.ai.constant.UserConstant;
-import com.ayang.ai.model.dto.post.PostEditRequest;
-import com.ayang.ai.model.vo.PostVO;
-import com.ayang.ai.service.PostService;
-import com.ayang.ai.service.UserService;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ayang.ai.common.BaseResponse;
 import com.ayang.ai.common.DeleteRequest;
 import com.ayang.ai.common.ErrorCode;
 import com.ayang.ai.common.ResultUtils;
+import com.ayang.ai.constant.UserConstant;
 import com.ayang.ai.exception.BusinessException;
 import com.ayang.ai.exception.ThrowUtils;
 import com.ayang.ai.model.dto.post.PostAddRequest;
+import com.ayang.ai.model.dto.post.PostEditRequest;
 import com.ayang.ai.model.dto.post.PostQueryRequest;
 import com.ayang.ai.model.dto.post.PostUpdateRequest;
 import com.ayang.ai.model.entity.Post;
 import com.ayang.ai.model.entity.User;
-
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import com.ayang.ai.model.vo.PostVO;
+import com.ayang.ai.service.PostService;
+import com.ayang.ai.service.UserService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 帖子接口

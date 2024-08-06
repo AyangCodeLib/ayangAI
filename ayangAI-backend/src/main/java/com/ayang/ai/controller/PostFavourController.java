@@ -1,7 +1,5 @@
 package com.ayang.ai.controller;
 
-import com.ayang.ai.service.PostFavourService;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ayang.ai.common.BaseResponse;
 import com.ayang.ai.common.ErrorCode;
 import com.ayang.ai.common.ResultUtils;
@@ -13,15 +11,18 @@ import com.ayang.ai.model.dto.postfavour.PostFavourQueryRequest;
 import com.ayang.ai.model.entity.Post;
 import com.ayang.ai.model.entity.User;
 import com.ayang.ai.model.vo.PostVO;
+import com.ayang.ai.service.PostFavourService;
 import com.ayang.ai.service.PostService;
 import com.ayang.ai.service.UserService;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 帖子收藏接口

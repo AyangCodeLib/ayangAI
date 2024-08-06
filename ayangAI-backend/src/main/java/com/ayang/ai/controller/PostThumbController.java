@@ -1,20 +1,21 @@
 package com.ayang.ai.controller;
 
-import com.ayang.ai.service.PostThumbService;
 import com.ayang.ai.common.BaseResponse;
 import com.ayang.ai.common.ErrorCode;
 import com.ayang.ai.common.ResultUtils;
 import com.ayang.ai.exception.BusinessException;
 import com.ayang.ai.model.dto.postthumb.PostThumbAddRequest;
 import com.ayang.ai.model.entity.User;
+import com.ayang.ai.service.PostThumbService;
 import com.ayang.ai.service.UserService;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 帖子点赞接口
