@@ -25,10 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,16 +51,18 @@ public class ScoringResultServiceImpl extends ServiceImpl<ScoringResultMapper, S
     public void validScoringResult(ScoringResult scoringResult, boolean add) {
         ThrowUtils.throwIf(scoringResult == null, ErrorCode.PARAMS_ERROR);
         // todo 从对象中取值
-        String title = scoringResult.getTitle();
+        String resultName = scoringResult.getResultName();
+        Long appId = scoringResult.getAppId();
+
         // 创建数据时，参数不能为空
         if (add) {
             // todo 补充校验规则
-            ThrowUtils.throwIf(StringUtils.isBlank(title), ErrorCode.PARAMS_ERROR);
+            ThrowUtils.throwIf(StringUtils.isBlank(resultName), ErrorCode.PARAMS_ERROR, "名称不能为空");
         }
         // 修改数据时，有参数则校验
         // todo 补充校验规则
-        if (StringUtils.isNotBlank(title)) {
-            ThrowUtils.throwIf(title.length() > 80, ErrorCode.PARAMS_ERROR, "标题过长");
+        if (StringUtils.isNotBlank(resultName)) {
+            ThrowUtils.throwIf(resultName.length() > 128, ErrorCode.PARAMS_ERROR, "结果名称不能超过128");
         }
     }
 
