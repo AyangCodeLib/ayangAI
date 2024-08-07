@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 题目视图
@@ -25,7 +26,7 @@ public class QuestionVO implements Serializable {
     /**
      * 题目内容（json格式）
      */
-    private QuestionContentDTO questionContent;
+    private List<QuestionContentDTO> questionContent;
 
     /**
      * 应用 id
@@ -64,7 +65,7 @@ public class QuestionVO implements Serializable {
         }
         Question question = new Question();
         BeanUtils.copyProperties(questionVO, question);
-        QuestionContentDTO contentDTO = questionVO.getQuestionContent();
+        List<QuestionContentDTO> contentDTO = questionVO.getQuestionContent();
         question.setQuestionContent(JSONUtil.toJsonStr(contentDTO));
         return question;
     }
@@ -81,7 +82,10 @@ public class QuestionVO implements Serializable {
         }
         QuestionVO questionVO = new QuestionVO();
         BeanUtils.copyProperties(question, questionVO);
-        questionVO.setQuestionContent(JSONUtil.toBean(question.getQuestionContent(), QuestionContentDTO.class));
+        String questionContent = question.getQuestionContent();
+        if (questionContent != null) {
+            questionVO.setQuestionContent(JSONUtil.toList(questionContent, QuestionContentDTO.class));
+        }
         return questionVO;
     }
 }
