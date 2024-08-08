@@ -1,11 +1,12 @@
 package com.ayang.ai.service;
 
+import com.ayang.ai.model.dto.useranswer.UserAnswerQueryRequest;
+import com.ayang.ai.model.entity.App;
+import com.ayang.ai.model.entity.UserAnswer;
+import com.ayang.ai.model.vo.UserAnswerVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ayang.ai.model.dto.useranswer.UserAnswerQueryRequest;
-import com.ayang.ai.model.entity.UserAnswer;
-import com.ayang.ai.model.vo.UserAnswerVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
  * 用户答案服务
  *
  * @author <a href="https://github.com/AyangCodeLib">阿洋努力学习</a>
- * 
  */
 public interface UserAnswerService extends IService<UserAnswer> {
 
@@ -21,9 +21,10 @@ public interface UserAnswerService extends IService<UserAnswer> {
      * 校验数据
      *
      * @param userAnswer
-     * @param add 对创建的数据进行校验
+     * @param add        对创建的数据进行校验
+     * @return
      */
-    void validUserAnswer(UserAnswer userAnswer, boolean add);
+    App validUserAnswer(UserAnswer userAnswer, boolean add);
 
     /**
      * 获取查询条件
@@ -32,7 +33,7 @@ public interface UserAnswerService extends IService<UserAnswer> {
      * @return
      */
     QueryWrapper<UserAnswer> getQueryWrapper(UserAnswerQueryRequest userAnswerQueryRequest);
-    
+
     /**
      * 获取用户答案封装
      *

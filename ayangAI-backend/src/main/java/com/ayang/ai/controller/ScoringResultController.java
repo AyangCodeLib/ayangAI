@@ -59,7 +59,7 @@ public class ScoringResultController {
         ScoringResult scoringResult = new ScoringResult();
         BeanUtils.copyProperties(scoringResultAddRequest, scoringResult);
         List<String> resultProp = scoringResultAddRequest.getResultProp();
-        scoringResult.setResultDesc(JSONUtil.toJsonStr(resultProp));
+        scoringResult.setResultProp(JSONUtil.toJsonStr(resultProp));
         // 数据校验
         scoringResultService.validScoringResult(scoringResult, true);
         // 填充默认值
