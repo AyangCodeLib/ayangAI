@@ -16,6 +16,7 @@ import com.ayang.ai.model.dto.useranswer.UserAnswerUpdateRequest;
 import com.ayang.ai.model.entity.App;
 import com.ayang.ai.model.entity.User;
 import com.ayang.ai.model.entity.UserAnswer;
+import com.ayang.ai.model.enums.ReviewStatusEnum;
 import com.ayang.ai.model.vo.UserAnswerVO;
 import com.ayang.ai.scoring.ScoringStrategyExecutor;
 import com.ayang.ai.service.AppService;
@@ -71,6 +72,9 @@ public class UserAnswerController {
         userAnswer.setChoices(JSONUtil.toJsonStr(choices));
         // 数据校验
         App app = userAnswerService.validUserAnswer(userAnswer, true);
+        if (ReviewStatusEnum.PASS.equals(ReviewStatusEnum.getEnumByValue(app.getReviewStatus()))) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "应用未通过审核，无法答题");
+        }
         // 填充默认值
         User loginUser = userService.getLoginUser(request);
         userAnswer.setUserId(loginUser.getId());
