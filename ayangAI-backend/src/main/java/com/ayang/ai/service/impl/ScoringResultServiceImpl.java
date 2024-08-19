@@ -99,7 +99,7 @@ public class ScoringResultServiceImpl extends ServiceImpl<ScoringResultMapper, S
         String sortField = scoringResultQueryRequest.getSortField();
         String sortOrder = scoringResultQueryRequest.getSortOrder();
 
-        // todo 补充需要的查询条件
+        // 补充需要的查询条件
         // 从多字段中搜索
         if (StringUtils.isNotBlank(searchText)) {
             // 需要拼接查询条件
@@ -168,7 +168,7 @@ public class ScoringResultServiceImpl extends ServiceImpl<ScoringResultMapper, S
             return ScoringResultVO.objToVo(scoringResult);
         }).collect(Collectors.toList());
 
-        // todo 可以根据需要为封装对象补充值，不需要的内容可以删除
+        // 可以根据需要为封装对象补充值，不需要的内容可以删除
         // region 可选
         // 1. 关联查询用户信息
         Set<Long> userIdSet = scoringResultList.stream().map(ScoringResult::getUserId).collect(Collectors.toSet());

@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 # Do not upload configuration files
-**/src/main/resources/config/prod/**
+!**/src/main/resources/config/prod/**
 
 ### STS ###
 .apt_generated

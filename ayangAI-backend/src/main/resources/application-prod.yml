@@ -5,6 +5,7 @@ spring:
     import:
     - classpath:config/prod/mysql/application.yml
     - classpath:config/prod/redis/application.yml
+    - classpath:config/prod/cos/application.yml
 # 接口文档配置
 knife4j:
   basic:
