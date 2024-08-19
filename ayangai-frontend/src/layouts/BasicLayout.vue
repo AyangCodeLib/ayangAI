@@ -33,14 +33,14 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
 }
 
 .content {
-  background: linear-gradient(to right, #fefefe, #fff);
   margin-bottom: 28px;
   padding: 20px;
+  background: linear-gradient(to right, #fefefe, #fff);
 }
 
 .footer {
-  backgroud: #efefef;
   padding: 16px;
   text-align: center;
+  backgroud: #efefef;
 }
 </style>

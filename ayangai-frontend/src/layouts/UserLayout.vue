@@ -32,8 +32,8 @@
 }
 
 #userLayout .logo {
-  height: 48px;
   width: 48px;
+  height: 48px;
 }
 
 #userLayout.header {
@@ -47,8 +47,8 @@
 }
 
 .footer {
-  backgroud: #efefef;
   padding: 16px;
   text-align: center;
+  backgroud: #efefef;
 }
 </style>
