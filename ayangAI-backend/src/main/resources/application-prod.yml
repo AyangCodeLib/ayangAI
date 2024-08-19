@@ -9,6 +9,6 @@ spring:
 # 接口文档配置
 knife4j:
   basic:
-    enable: true
+    enable: false
     username: root
     password: 123456
