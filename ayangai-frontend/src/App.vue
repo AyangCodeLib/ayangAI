@@ -12,8 +12,20 @@
 <script setup lang="ts">
 import BasicLayout from "@/layouts/BasicLayout.vue";
 import { useRoute } from "vue-router";
+import { onMounted } from "vue";
 
 const route = useRoute();
+
+/**
+ * 全局初始化函数，有全局单词调用的代码，都可以写到之类
+ */
+const doInit = () => {
+  console.log("hello 欢迎来到我的项目");
+};
+
+onMounted(() => {
+  doInit();
+});
 </script>
 
 <style scoped></style>
